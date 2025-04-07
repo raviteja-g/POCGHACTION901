@@ -1,0 +1,24 @@
+name: Dev Build and Deploy on Push
+run-name: Build and Deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Make the script files executable
+        run: chmod +x ./.github/workflows/scripts/btp_dev_deploy.sh
+      - name: Run a script
+        env:
+          cf_user: ${{ secrets.CF_USER }}
+          cf_password: ${{ secrets.CF_PASSWORD }}
+          cf_api_url: ${{vars.CF_API_URL}}
+          cf_org: ${{vars.CF_ORG}}
+          cf_space: ${{vars.CF_SPACE}}
+        run: ./.github/workflows/scripts/btp_dev_deploy.sh

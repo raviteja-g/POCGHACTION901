@@ -1,0 +1,22 @@
+name: QA Build and Deploy on Merge
+run-name: QA Build and Deploy
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - QA
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: hello world
+        run: echo "Hello World!"
+        shell: bash
+  if_merged:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo The PR was merged
