@@ -5,11 +5,12 @@ annotate service.Incidents with @(
         Data : [
             {
                 $Type : 'UI.DataField',
-                Label : 'customer_ID',
+                Label : '{i18n>customer_ID}',
                 Value : customer_ID,
             },
             {
                 $Type : 'UI.DataField',
+                Label : '{i18n>title}',
                 Value : title,
             },
         ],
@@ -18,19 +19,20 @@ annotate service.Incidents with @(
         {
             $Type : 'UI.ReferenceFacet',
             ID : 'GeneratedFacet1',
-            Label : 'General Information',
+            Label : '{i18n>generalInformation}',
             Target : '@UI.FieldGroup#GeneratedGroup',
         },
     ],
     UI.LineItem : [
         {
             $Type : 'UI.DataField',
-            Label : 'customer_ID',
+            Label : '{i18n>customer_ID}',
             Value : customer_ID,
         },
         {
             $Type : 'UI.DataField',
-            Value : '{i18n>title}',
+            Label : '{i18n>title}',
+            Value : title,
         },
     ],
 );
