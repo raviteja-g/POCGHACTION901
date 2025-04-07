@@ -23,5 +23,5 @@ cf api $cf_api_url
 cf auth $cf_user "$cf_password"
 
 echo '############## Deploy ##############'
-cf target -o $cf_qa_org -s $cf_qa_space
+cf target -o $cf_org -s $cf_space
 cf deploy mta_archives/POCGHACTION901_1.0.0.mtar -f
