@@ -7,16 +7,21 @@ on:
     branches:
       - QA
 jobs:
-  hello:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: hello world
-        run: echo "Hello World!"
-        shell: bash
-  if_merged:
+  deploy:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-    - run: |
-        echo The PR was merged
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Make the script files executable
+        run: chmod +x ./.github/workflows/scripts/btp_qa_deploy.sh
+      - name: Run a script
+        env:
+          cf_user: ${{ secrets.CF_USER }}
+          cf_password: ${{ secrets.CF_PASSWORD }}
+          cf_api_url: ${{vars.CF_API_URL}}
+          cf_org: ${{vars.CF_QA_ORG}}
+          cf_space: ${{vars.CF_QA_SPACE}}
+        run: ./.github/workflows/scripts/btp_qa_deploy.sh
