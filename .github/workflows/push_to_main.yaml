@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    types:
+      - closed
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -22,3 +25,9 @@ jobs:
           cf_org: ${{vars.CF_ORG}}
           cf_space: ${{vars.CF_SPACE}}
         run: ./.github/workflows/scripts/btp_dev_deploy.sh
+  if_merged:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo The PR was merged
