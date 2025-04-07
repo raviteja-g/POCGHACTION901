@@ -1,0 +1,16 @@
+name: QA Build and Deploy on Merge
+run-name: QA Build and Deploy
+on:
+  pull_request:
+    types:
+      - opened
+    branches:
+      - QA
+jobs:
+  hello:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: hello world
+        run: echo "Hello World!"
+        shell: bash
