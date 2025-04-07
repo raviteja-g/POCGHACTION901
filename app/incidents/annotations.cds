@@ -30,7 +30,7 @@ annotate service.Incidents with @(
         },
         {
             $Type : 'UI.DataField',
-            Value : title,
+            Value : '{i18n>title}',
         },
     ],
 );
