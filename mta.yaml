@@ -9,6 +9,9 @@ modules:
   requires:
   - name: POCGHACTION901-db
   - name: POCGHACTION901-auth
+  - name: POCGHACTION901-connectivity
+  - name: POCGHACTION901-destination-service
+  - name: POCGHACTION901-logging
   provides:
   - name: srv-api
     properties:
@@ -118,6 +121,16 @@ resources:
     service: html5-apps-repo
     service-name: POCGHACTION901-html5-app-host-service
     service-plan: app-host
+- name: POCGHACTION901-connectivity
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: connectivity
+    service-plan: lite
+- name: POCGHACTION901-logging
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: application-logs
+    service-plan: lite
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
