@@ -33,7 +33,7 @@ jobs:
           name: mta
           path: ./
       - name: Deploy to CF
-        uses: guerric-p/cf-cli-action@master
+        uses: citizen-of-planet-earth/cf-cli-action@master
         with:
           cf_api: ${{secrets.CF_API_URL}}
           cf_username: ${{secrets.CF_USER}}
