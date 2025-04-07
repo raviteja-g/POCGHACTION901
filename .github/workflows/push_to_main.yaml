@@ -5,39 +5,20 @@ on:
     branches:
       - main
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Install MTA Build Tool
-        run: npm install -g mbt
-      - name: Disable package-lock.json
-        run: npm config set package-lock false
-      - name: Build MTA
-        run: mbt build -p cf
-      - name: Upload Artifact
-        uses: actions/upload-artifact@master	
-        with:	
-          name: mta
-          path: ./mta_archives/POCGHACTION901_1.0.0.mtar
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download Artifact
-        uses: actions/download-artifact@master
-        with:
-          name: mta
-          path: ./
-      - name: Deploy to CF
-        uses: citizen-of-planet-earth/cf-cli-action@master
-        with:
-          cf_api: ${{secrets.CF_API_URL}}
-          cf_username: ${{secrets.CF_USER}}
-          cf_password: ${{secrets.CF_PASSWORD}}
-          cf_org: ${{secrets.CF_ORG}}
-          cf_space: ${{secrets.CF_SPACE}}
-          command: deploy ./POCGHACTION901_1.0.0.mtar -f
+      - name: Make the script files executable
+        run: chmod +x ./.github/workflows/scripts/btp_deploy.sh
+      - name: Run a script
+        env:
+          cf_user: ${{ secrets.CF_USER }}
+          cf_password: ${{ secrets.CF_PASSWORD }}
+          cf_api_url: ${{vars.CF_API_URL}}
+          cf_org: ${{vars.CF_ORG}}
+          cf_space: ${{vars.CF_SPACE}}
+        run: ./.github/workflows/scripts/btp_deploy.sh
