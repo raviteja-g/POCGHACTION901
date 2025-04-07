@@ -23,3 +23,21 @@ jobs:
         with:	
           name: mta
           path: ./mta_archives/POCGHACTION901_1.0.0.mtar
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifact
+        uses: actions/download-artifact@master
+        with:
+          name: mta
+          path: ./
+      - name: Deploy to CF
+        uses: guerric-p/cf-cli-action@master
+        with:
+          cf_api: ${{secrets.CF_API_URL}}
+          cf_username: ${{secrets.CF_USER}}
+          cf_password: ${{secrets.CF_PASSWORD}}
+          cf_org: ${{secrets.CF_ORG}}
+          cf_space: ${{secrets.CF_SPACE}}
+          command: deploy ./POCGHACTION901_1.0.0.mtar -f
