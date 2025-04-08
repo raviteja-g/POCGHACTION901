@@ -30,12 +30,15 @@ response=$(curl --location --request POST 'https://transport-service-app-backend
 echo $response
 
 transportRequestId=$response | jq -r '.transportRequestId'
+echo '############## transportRequestId ##############'
 echo $transportRequestId
 
 queueEntries=$response | jq -r '.queueEntries'
+echo '############## queueEntries ##############'
 echo $queueEntries
 
 nodeId=$queueEntries | jq -r '.nodeId'
+echo '############## nodeId ##############'
 echo $nodeId
 
 curl -v POST 'https://transport-service-app-backend.ts.cfapps.us10.hana.ondemand.com/v2/nodes/'$nodeId'/transportRequests/import' --header 'Content-Type: application/json' --header "Authorization: Bearer $token" --data-raw '{"namedUser": "raviteja.gattu@sap.com", "transportRequests": [{ '"$transportRequestId"' }]}'
