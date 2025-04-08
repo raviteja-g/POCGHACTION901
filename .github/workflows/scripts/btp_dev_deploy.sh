@@ -33,13 +33,13 @@ echo $response
 echo '############## transportRequestId ##############'
 echo $response | jq -r '.transportRequestId'
 
-queueEntries=echo $response | jq -r '.queueEntries'
+#queueEntries=echo $response | jq -r '.queueEntries'
 echo '############## queueEntries ##############'
-echo $queueEntries
+echo $response | jq -r '.queueEntries'
 
-nodeId=echo $queueEntries | jq -r '.nodeId'
+#nodeId=echo $queueEntries | jq -r '.queueEntries[0].nodeId'
 echo '############## nodeId ##############'
-echo $nodeId
+echo $response | jq -r '.queueEntries[0].nodeId'
 
 curl -v POST 'https://transport-service-app-backend.ts.cfapps.us10.hana.ondemand.com/v2/nodes/'$nodeId'/transportRequests/import' --header 'Content-Type: application/json' --header "Authorization: Bearer $token" --data-raw '{"namedUser": "raviteja.gattu@sap.com", "transportRequests": [{ '"$transportRequestId"' }]}'
 echo Importing Success
