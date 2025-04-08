@@ -29,15 +29,15 @@ echo $body
 response=$(curl --location --request POST 'https://transport-service-app-backend.ts.cfapps.us10.hana.ondemand.com/v2/nodes/upload' --header 'Content-Type: application/json' --header "Authorization: Bearer $token" --data-raw '{ "nodeName": "DEV_NODE", "contentType": "MTA", "storageType": "FILE", "entries": [ { "uri": '"$body"' } ], "description": "TMS DEV MTA Upload", "namedUser": "raviteja.gattu@sap.com" }')
 echo $response
 
-transportRequestId=$response | jq -r '.transportRequestId'
+transportRequestId=echo $response | jq -r '.transportRequestId'
 echo '############## transportRequestId ##############'
 echo $transportRequestId
 
-queueEntries=$response | jq -r '.queueEntries'
+queueEntries=echo $response | jq -r '.queueEntries'
 echo '############## queueEntries ##############'
 echo $queueEntries
 
-nodeId=$queueEntries | jq -r '.nodeId'
+nodeId=echo $queueEntries | jq -r '.nodeId'
 echo '############## nodeId ##############'
 echo $nodeId
 
