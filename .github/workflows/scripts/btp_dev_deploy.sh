@@ -20,7 +20,7 @@ npx mbt build --mtar POCGHACTION901_1.0.0.mtar
 
 echo '############## Upload to CTMS ##############'
 local token;
-token=$(curl -s -X POST -u "$tms_client_id:$tms_client_secret" -d "grant_type=client_credentials&response_type=token" $cf_auth_url/oauth/token | sed -n '/ *"access_token": *"/ {s///; s/{//g ;s/".*//; p; }')
+token=$(curl -s -X POST -u 'sb-f6fc1da5-6ee8-461d-80ff-c718e04af095!b425594|alm-ts-backend!b1603:95cc5e5e-aa7c-4ac2-9f78-c0981ffae4dc$NnYG4dtBEaRyWztI8cmesp-hp74n5v27df8MzOK7anU=' -d "grant_type=client_credentials&response_type=token" https://77658471trial.authentication.us10.hana.ondemand.com/oauth/token | sed -n '/ *"access_token": *"/ {s///; s/{//g ;s/".*//; p; }')
 echo token $token
 local body;
 body=$(curl -s --location --request POST '$cf_tms_url/v2/files/upload' --header "Authorization: Bearer $token" --header 'Cookie: JSESSIONID=D11A4F1DE5C6638B18925D58307B360D; __VCAP_ID__=8aa9e193-d2a1-492c-76bc-288a' --form 'file=@"mta_archives/POCGHACTION901_1.mtar"' | awk -F ":" '{print $2}' | grep -Po "\\d+")
