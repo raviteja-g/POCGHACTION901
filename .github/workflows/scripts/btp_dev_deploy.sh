@@ -44,8 +44,8 @@ echo '############## nodeId ##############'
 echo $response | jq -r '.queueEntries[0].nodeId'
 nodeId=$(echo $response | jq -r '.queueEntries[0].nodeId')
 
-curl -v POST 'https://transport-service-app-backend.ts.cfapps.us10.hana.ondemand.com/v2/nodes/'$nodeId'/transportRequests/import' --header 'Content-Type: application/json' --header "Authorization: Bearer $token" --data-raw '{"namedUser": "raviteja.gattu@sap.com", "transportRequests": [{ '"$transportRequestId"' }]}'
-echo Importing Success
+curl -v POST 'https://transport-service-app-backend.ts.cfapps.us10.hana.ondemand.com/v2/nodes/'${nodeId}'/transportRequests/import' --header 'Content-Type: application/json' --header "Authorization: Bearer $token" --data-raw '{"namedUser": "raviteja.gattu@sap.com", "transportRequests": [{ '"$transportRequestId"' }]}'
+echo '############## Importing Success  ##############'
 
 
 #echo '############## Authorizations ##############'
