@@ -26,7 +26,7 @@ echo $token
 body=$(curl -v -s --location --request POST 'https://transport-service-app-backend.ts.cfapps.us10.hana.ondemand.com/v2/files/upload' --header "Authorization: Bearer $token" --form 'file=@"/home/runner/work/POCGHACTION901/POCGHACTION901/mta_archives/POCGHACTION901_1.0.0.mtar"' | jq -r '.fileId')
 echo $body
 
-curl --location --request POST 'https://transport-service-app-backend.ts.cfapps.us10.hana.ondemand.com/v2/nodes/upload' --header 'Content-Type: application/json' --header "Authorization: Bearer $token" --data-raw '{ "nodeName": "DEV_NODE", "contentType": "MTA", "storageType": "FILE", "entries": [ { "uri": '"24"' } ], "description": "TMS DEV MTA Upload", "namedUser": "raviteja.gattu@sap.com" }'
+curl --location --request POST 'https://transport-service-app-backend.ts.cfapps.us10.hana.ondemand.com/v2/nodes/upload' --header 'Content-Type: application/json' --header "Authorization: Bearer $token" --data-raw '{ "nodeName": "DEV_NODE", "contentType": "MTA", "storageType": "FILE", "entries": [ { "uri": '"$body"' } ], "description": "TMS DEV MTA Upload", "namedUser": "raviteja.gattu@sap.com" }'
 echo Success
 
 #echo '############## Authorizations ##############'
