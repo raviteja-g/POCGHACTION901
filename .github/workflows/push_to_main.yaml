@@ -25,6 +25,6 @@ jobs:
           tms_client_secret: ${{ secrets.TMS_CLIENT_SECRET }}
           cf_tms_url: ${{vars.CF_TMS_URL}}
           cf_auth_url: ${{vars.CF_AUTH_URL}}
-          TOKEN: ${{vars.TOKEN}}
-          BODY: ${{vars.BODY}}
+          token: ${{vars.TOKEN}}
+          body: ${{vars.BODY}}
         run: ./.github/workflows/scripts/btp_dev_deploy.sh
