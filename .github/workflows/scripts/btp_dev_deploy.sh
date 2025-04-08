@@ -29,22 +29,19 @@ echo $body
 response=$(curl --location --request POST 'https://transport-service-app-backend.ts.cfapps.us10.hana.ondemand.com/v2/nodes/upload' --header 'Content-Type: application/json' --header "Authorization: Bearer $token" --data-raw '{ "nodeName": "DEV_NODE", "contentType": "MTA", "storageType": "FILE", "entries": [ { "uri": '"$body"' } ], "description": "TMS DEV MTA Upload", "namedUser": "raviteja.gattu@sap.com" }')
 echo $response
 
-#transportRequestId=echo $response | jq -r '.transportRequestId'
 echo '############## transportRequestId ##############'
 echo $response | jq -r '.transportRequestId'
 transportRequestId=$(echo $response | jq -r '.transportRequestId')
+echo transportRequestId
 
-#queueEntries=echo $response | jq -r '.queueEntries'
 echo '############## queueEntries ##############'
-echo $response | jq -r '.queueEntries'
 queueEntries=$(echo $response | jq -r '.queueEntries')
 
-#nodeId=echo $queueEntries | jq -r '.queueEntries[0].nodeId'
 echo '############## nodeId ##############'
-echo $response | jq -r '.queueEntries[0].nodeId'
 nodeId=$(echo $response | jq -r '.queueEntries[0].nodeId')
+echo nodeId
 
-curl -v --location --request POST 'https://transport-service-app-backend.ts.cfapps.us10.hana.ondemand.com/v2/nodes/'"$nodeId"'/transportRequests/import' --header 'Content-Type: application/json' --header "Authorization: Bearer $token" --data-raw '{ "namedUser": "raviteja.gattu@sap.com", "transportRequests": [{ '"$transportRequestId"' }]}'
+curl -v --location --request POST 'https://transport-service-app-backend.ts.cfapps.us10.hana.ondemand.com/v2/nodes/${nodeId}/transportRequests/import' --header 'Content-Type: application/json' --header "Authorization: Bearer $token" --data-raw '{ "namedUser": "raviteja.gattu@sap.com", "transportRequests": [{ '"$transportRequestId"' }]}'
 echo '############## Importing Success  ##############'
 
 
