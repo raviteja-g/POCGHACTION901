@@ -20,10 +20,12 @@ npx mbt build --mtar POCGHACTION901_1.0.0.mtar
 
 echo '############## Upload to CTMS ##############'
 echo $token $body
-$token=$(curl -s -X POST -u "$tms_client_id:$tms_client_secret" -d "grant_type=client_credentials&response_type=token" $cf_auth_url/oauth/token | sed -n '/ *"access_token": *"/ {s///; s/{//g ;s/".*//; p; }')
-echo $token
-$body=$(curl -s --location --request POST '$cf_tms_url/v2/files/upload' --header "Authorization: Bearer $token" --header 'Cookie: JSESSIONID=D11A4F1DE5C6638B18925D58307B360D; __VCAP_ID__=8aa9e193-d2a1-492c-76bc-288a' --form 'file=@"mta_archives/POCGHACTION901_1.mtar"' | awk -F ":" '{print $2}' | grep -Po "\\d+")
-echo $body
+local token;
+token=$(curl -s -X POST -u "$tms_client_id:$tms_client_secret" -d "grant_type=client_credentials&response_type=token" $cf_auth_url/oauth/token | sed -n '/ *"access_token": *"/ {s///; s/{//g ;s/".*//; p; }')
+echo token $token
+local body;
+body=$(curl -s --location --request POST '$cf_tms_url/v2/files/upload' --header "Authorization: Bearer $token" --header 'Cookie: JSESSIONID=D11A4F1DE5C6638B18925D58307B360D; __VCAP_ID__=8aa9e193-d2a1-492c-76bc-288a' --form 'file=@"mta_archives/POCGHACTION901_1.mtar"' | awk -F ":" '{print $2}' | grep -Po "\\d+")
+echo body
 curl --location --request POST '$cf_tms_url/v2/nodes/upload' --header 'Content-Type: application/json' --header "Authorization: Bearer $token" --header 'Cookie: JSESSIONID=D11A4F1DE5C6638B18925D58307B360D; __VCAP_ID__=8aa9e193-d2a1-492c-76bc-288a' --data-raw '{ "nodeName": "DEV_NODE", "contentType": "MTA", "storageType": "FILE", "entries": [ { "uri": '"$body"' } ], "description": "TMS DEV MTA Upload", "namedUser": "raviteja.gattu@sap.com" }'
 
 #echo '############## Authorizations ##############'
