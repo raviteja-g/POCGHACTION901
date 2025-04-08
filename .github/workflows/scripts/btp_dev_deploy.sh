@@ -26,8 +26,21 @@ echo $token
 body=$(curl -v -s --location --request POST 'https://transport-service-app-backend.ts.cfapps.us10.hana.ondemand.com/v2/files/upload' --header "Authorization: Bearer $token" --form 'file=@"/home/runner/work/POCGHACTION901/POCGHACTION901/mta_archives/POCGHACTION901_1.0.0.mtar"' | jq -r '.fileId')
 echo $body
 
-curl --location --request POST 'https://transport-service-app-backend.ts.cfapps.us10.hana.ondemand.com/v2/nodes/upload' --header 'Content-Type: application/json' --header "Authorization: Bearer $token" --data-raw '{ "nodeName": "DEV_NODE", "contentType": "MTA", "storageType": "FILE", "entries": [ { "uri": '"$body"' } ], "description": "TMS DEV MTA Upload", "namedUser": "raviteja.gattu@sap.com" }'
-echo Success
+response=curl -v --location --request POST 'https://transport-service-app-backend.ts.cfapps.us10.hana.ondemand.com/v2/nodes/upload' --header 'Content-Type: application/json' --header "Authorization: Bearer $token" --data-raw '{ "nodeName": "DEV_NODE", "contentType": "MTA", "storageType": "FILE", "entries": [ { "uri": '"$body"' } ], "description": "TMS DEV MTA Upload", "namedUser": "raviteja.gattu@sap.com" }'
+echo $response
+
+transportRequestId=$response | jq -r '.transportRequestId'
+echo $transportRequestId
+
+queueEntries=$response | jq -r '.queueEntries'
+echo $queueEntries
+
+nodeId=$queueEntries | jq -r '.nodeId'
+echo $nodeId
+
+curl -v POST 'https://transport-service-app-backend.ts.cfapps.us10.hana.ondemand.com/v2/nodes/'$nodeId'/transportRequests/import' --header 'Content-Type: application/json' --header "Authorization: Bearer $token" --data-raw '{"namedUser": "raviteja.gattu@sap.com", "transportRequests": [{ '"$transportRequestId"' }]}'
+echo Importing Success
+
 
 #echo '############## Authorizations ##############'
 #cf api $cf_api_url
