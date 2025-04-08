@@ -19,7 +19,7 @@ echo '############## Build ##############'
 npx mbt build --mtar POCGHACTION901_1.0.0.mtar
 
 echo '############## Upload to CTMS ##############'
-TOKEN=$(curl -s -X POST -u "$tms_client_id:$tms_client_secret" -d "grant_type=client_credentials&response_type=token" $cf_auth_url/oauth/token | sed -n '/ *"access_token": *"/ {s///; s/{//g ;s/".*//; p; }')
+curl -s -X POST -u "$tms_client_id:$tms_client_secret" -d "grant_type=client_credentials&response_type=token" $cf_auth_url/oauth/token | sed -n '/ *"access_token": *"/ {s///; s/{//g ;s/".*//; p; }'
 BODY=$(curl -s --location --request POST '$cf_tms_url/v2/files/upload' --header "Authorization: Bearer $TOKEN" --header 'Cookie: JSESSIONID=D11A4F1DE5C6638B18925D58307B360D; __VCAP_ID__=8aa9e193-d2a1-492c-76bc-288a' --form 'file=@"mta_archives/POCGHACTION901_1.mtar"' | awk -F ":" '{print $2}' | grep -Po "\\d+")
 curl --location --request POST '$cf_tms_url/v2/nodes/upload' --header 'Content-Type: application/json' --header "Authorization: Bearer $TOKEN" --header 'Cookie: JSESSIONID=D11A4F1DE5C6638B18925D58307B360D; __VCAP_ID__=8aa9e193-d2a1-492c-76bc-288a' --data-raw '{ "nodeName": "DEV_NODE", "contentType": "MTA", "storageType": "FILE", "entries": [ { "uri": '"$BODY"' } ], "description": "TMS DEV MTA Upload", "namedUser": "raviteja.gattu@sap.com" }'
 
