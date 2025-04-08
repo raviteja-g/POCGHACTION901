@@ -38,7 +38,7 @@ echo $queueEntries
 nodeId=$queueEntries | jq -r '.nodeId'
 echo $nodeId
 
-curl POST 'https://transport-service-app-backend.ts.cfapps.us10.hana.ondemand.com/v2/nodes/'$nodeId'/transportRequests/import' --header 'Content-Type: application/json' --header "Authorization: Bearer $token" --data-raw '{"namedUser": "raviteja.gattu@sap.com", "transportRequests": [{ '"$transportRequestId"' }]}'
+curl -v POST 'https://transport-service-app-backend.ts.cfapps.us10.hana.ondemand.com/v2/nodes/'$nodeId'/transportRequests/import' --header 'Content-Type: application/json' --header "Authorization: Bearer $token" --data-raw '{"namedUser": "raviteja.gattu@sap.com", "transportRequests": [{ '"$transportRequestId"' }]}'
 echo Importing Success
 
 
