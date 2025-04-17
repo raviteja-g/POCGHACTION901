@@ -12,6 +12,9 @@ modules:
   - name: POCGHACTION901-connectivity
   - name: POCGHACTION901-destination-service
   - name: POCGHACTION901-logging
+  - name: autoscaler
+    parameters:
+      path: autoscaler/config.json
   provides:
   - name: srv-api
     properties:
@@ -140,6 +143,8 @@ resources:
   parameters:
     service: application-logs
     service-plan: lite
+- name: autoscaler
+  type: org.cloudfoundry.existing-service
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
